@@ -6,6 +6,7 @@ import Todos from './components/todos'
 import StorageToDo from './components/storageToDo';
 import './App.css'
 import ErrorRoute from './components/error-route';
+import LoginRegister from './components/loginRegister';
 
 const API = 'http://localhost:8080';
 
@@ -28,7 +29,7 @@ function Root() {
   return (
     <>
       <Header />
-      <div style={{ padding: '2rem'}}> 
+      <div> 
         <Routes>
           <Route path="/" element={<>
             <AddTodo fetchAllTodos={fetchTodos} />
@@ -41,6 +42,7 @@ function Root() {
             errorElement={<ErrorRoute />}
           />
           <Route path="/storage" element={<StorageToDo />} errorElement={<ErrorRoute />} />
+          <Route path="/authenticate" element={<LoginRegister />} />
         </Routes>
       </div>
     </>
