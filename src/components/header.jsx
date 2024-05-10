@@ -51,7 +51,6 @@ function Header(props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   const routes = (item) => {
-    console.log("Hi")
     if (item === 'Todo') {
       navigate("/");
     } 

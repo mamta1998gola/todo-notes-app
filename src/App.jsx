@@ -7,6 +7,7 @@ import StorageToDo from './components/storageToDo';
 import './App.css'
 import ErrorRoute from './components/error-route';
 import LoginRegister from './components/loginRegister';
+import ChangePassowrd from './components/changePassword';
 
 const API = 'http://localhost:8080';
 
@@ -43,6 +44,7 @@ function Root() {
           />
           <Route path="/storage" element={<StorageToDo />} errorElement={<ErrorRoute />} />
           <Route path="/authenticate" element={<LoginRegister />} />
+          <Route path="/changepassword" element={<ChangePassowrd />} />
         </Routes>
       </div>
     </>

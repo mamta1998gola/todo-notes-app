@@ -15,6 +15,10 @@
     height: 520px;
 }
 
+.wrapper.password {
+    overflow: visible;
+}
+
 .wrapper .form-box {
     width: 100%;
     padding: 40px;
