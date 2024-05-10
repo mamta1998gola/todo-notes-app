@@ -43,7 +43,7 @@ function Root() {
             errorElement={<ErrorRoute />}
           />
           <Route path="/storage" element={<StorageToDo />} errorElement={<ErrorRoute />} />
-          <Route path="/authenticate" element={<LoginRegister />} />
+          <Route path="/auth" element={<LoginRegister />} />
           <Route path="/changepassword" element={<ChangePassowrd />} />
         </Routes>
       </div>

@@ -2,12 +2,12 @@
     {
         "username": "Prabhat Ranjan",
         "email": "prabhat5172992@gmail.com",
-        "password": "56089"
+        "password": "1234567890"
     },
     {
         "username": "Mamta Gola",
         "email": "mamta1998gola@gmail.com",
-        "password": "1998"
+        "password": "gola3210"
     },
     {
         "username": "Ranvijay Ranjan",
@@ -17,7 +17,7 @@
     {
         "username": "Mamta Ranjan",
         "email": "mamtaranjan@gmail.com",
-        "password": "12345"
+        "password": "111111111111"
     },
     {
         "username": "mamtaranjan@gmail.com",
@@ -27,16 +27,6 @@
     {
         "username": "Hemant",
         "email": "hemant@gmail.com",
-        "password": "12345"
-    },
-    {
-        "username": "Ranvijay Ranjan",
-        "email": "prabhat766@gmail.com",
-        "password": "7660403"
-    },
-    {
-        "username": "Thanesh",
-        "email": "thanesh@gmail.com",
-        "password": "54321"
+        "password": "123"
     }
 ]

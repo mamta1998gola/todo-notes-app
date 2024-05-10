@@ -62,7 +62,6 @@ app.put('/signup', (req, res) => {
 
     fs.readFile('userlist.json', 'utf8', (err, data) => {
         const d = JSON.parse(data);
-        console.log("--0", email, password, d.find(item => item.email === email));
         if(!d.find(item => item.email === email)) {
             res.status(400).send({ "message": "User doesn't exit!" })
         } else {
@@ -75,7 +74,7 @@ app.put('/signup', (req, res) => {
     
             fs.writeFile('userlist.json', JSON.stringify(changedData, null, 4), (err) => {
                 if (err) throw err;
-                res.status(200).send("Update successful!");
+                res.status(200).send({message: "Update successful!"});
             });
         }
     });

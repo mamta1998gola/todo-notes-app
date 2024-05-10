@@ -38,7 +38,7 @@ const LoginRegister = () => {
         const data = fields;
         data[type] = val;
 
-        setFields(data);
+        setFields({...data}); // don't set directly objects
     }
 
     const submitData = () => {
@@ -54,7 +54,10 @@ const LoginRegister = () => {
                 return res.json()
             })
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.token));
+                if(response.token) {
+                    sessionStorage.setItem('token', JSON.stringify(response.token));
+                }
+                setMessage(response.message);
                 resetFields('registerform');
             })
             .catch(err => {
@@ -76,7 +79,10 @@ const LoginRegister = () => {
                 return res.json()
             })
             .then(response => {
-                sessionStorage.setItem('token', JSON.stringify(response.token));
+                if(response.token) {
+                    sessionStorage.setItem('token', JSON.stringify(response.token));
+                }
+                setMessage(response.message);
                 resetFields('loginform');
             })
             .catch(err => {
@@ -92,8 +98,8 @@ const LoginRegister = () => {
                     <form id="loginform" onSubmit={loginReq}>
                         <h1>Login</h1>
                         <div className="input-box">
-                            <input type="text" placeholder="username" required onChange={(e) => getFormFields('username', e)} />
-                            <FaUser className="icon" />
+                            <input type="email" placeholder="Email" required onChange={(e) => getFormFields('email', e)} />
+                            <FaEnvelope className="icon" />
                         </div>
                         <div className="input-box">
                             <input type="password" placeholder="password" required onChange={(e) => getFormFields('password', e)} />
@@ -111,7 +117,7 @@ const LoginRegister = () => {
                         <button type="submit">Login</button>
 
                         <div className="register-link">
-                            <p>Don't have an account? <a href="#" onClick={() => registerLink('/changepassword')}>Register</a></p>
+                            <p>Don't have an account? <a href="#" onClick={registerLink}>Register</a></p>
                         </div>
                     </form>
                 </div>

@@ -7,6 +7,10 @@
         {
             "id": "ca79e6ba-224e-460b-9d78-0c0356558014",
             "todo": "Home"
+        },
+        {
+            "id": "9da2853e-f751-45e1-83eb-3b296e0e0b65",
+            "todo": "Complete Mamta Project"
         }
     ],
     "completedTodos": [
@@ -17,10 +21,6 @@
         {
             "id": "eb6f3279-63ce-4246-a664-4092e2b329a4",
             "todo": "Buy Laptop"
-        },
-        {
-            "id": "27617cd9-c7d0-4958-821f-6caebb9a7e3a",
-            "todo": "Read stories"
         }
     ]
 }
