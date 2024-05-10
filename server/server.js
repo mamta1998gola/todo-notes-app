@@ -3,8 +3,11 @@ const fs = require('fs');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
 const bodyParser = require('body-parser');
+const cookieParser = require("cookie-parser");
+const { signIn, welcome, refresh, logout } = require("./handlers")
 
 const app = express();
+app.use(cookieParser());
 
 var rawBodyHandler = function (req, res, buf, encoding) {
     if (buf && buf.length) {
@@ -24,6 +27,64 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 8080;
 
 const user = "prabhat5172992@gmail.com";
+
+app.post('/signup', (req, res) => {
+    const { username, password, email } = req.body;
+    
+    if (username && password && /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
+        fs.readFile('userlist.json', 'utf8', (err, data) => {
+            const d = JSON.parse(data);
+            if (!d.find(item => item.email === email)) {
+                d.push({
+                    username,
+                    email,
+                    password
+                });
+
+                fs.writeFile('userlist.json', JSON.stringify(d, null, 4), (err) => {
+                    if (err) throw err;
+                    else {
+                        return res.send(signIn(req, res, d));
+                    }
+                });
+            } else {
+                res.status(400).send({"message": "User already exists!"});
+            }
+        });
+        // signIn(req, res);
+    } else {
+        res.status(400).send({ "message": "Data is not correct!"})
+    }
+});
+
+app.put('/signup', (req, res) => {
+    const { email, password } = req.body;
+
+    fs.readFile('userlist.json', 'utf8', (err, data) => {
+        const d = JSON.parse(data);
+        console.log("--0", email, password, d.find(item => item.email === email));
+        if(!d.find(item => item.email === email)) {
+            res.status(400).send({ "message": "User doesn't exit!" })
+        } else {
+            const changedData = d.map(item => {
+                if(item.email === email) {
+                    item.password = password;
+                }
+                return item;
+            });
+    
+            fs.writeFile('userlist.json', JSON.stringify(changedData, null, 4), (err) => {
+                if (err) throw err;
+                res.status(200).send("Update successful!");
+            });
+        }
+    });
+});
+
+app.post('/signin', signIn);
+app.get('/welcome', welcome);
+app.post('/refresh', refresh);
+app.get('/logout', logout);
 
 app.post('/addNotes', (req, res) => {
     const { notes } = req.body;
@@ -117,7 +178,7 @@ app.put('/updateTodos', (req, res) => {
     });
 
     res.status(200).send({ 'message': 'Successfully updated' })
-})
+});
 
 app.listen(PORT, () => {
     console.log('App is running on port: ', PORT);
