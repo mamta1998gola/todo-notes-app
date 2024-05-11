@@ -8,7 +8,7 @@ const signIn = (req, res, userlist) => {
 	// Get credentials from JSON body
 	const { email, password } = req.body;
 	let userListData = [...users];
-	if(typeof userlist === 'object') {
+	if (typeof userlist === 'object') {
 		userListData = [...userlist];
 	}
 	const user = userListData.find(item => item.email === email);
@@ -16,7 +16,7 @@ const signIn = (req, res, userlist) => {
 	if (!email || !password || user.email !== email || user.password !== password) {
 		// return 401 error is username or password doesn't exist, or if password does
 		// not match the password in our records
-		return res.status(401).send({message: "Unauthorised Login!"}).end()
+		return res.status(401).send({ message: "Unauthorised Login!" }).end()
 	}
 
 	// Create a new token with the username in the payload
@@ -35,7 +35,7 @@ const signIn = (req, res, userlist) => {
 
 const welcome = (req, res) => {
 	// We can obtain the session token from the requests cookies, which come with every request
-	const token = req.cookies.token
+	const token = req.cookies.token;
 
 	// if the cookie is not set, return an unauthorized error
 	if (!token) {
@@ -61,7 +61,8 @@ const welcome = (req, res) => {
 	// Finally, return the welcome message to the user, along with their
 	// username given in the token
 	const loggedInUser = users.find(item => item.email === payload.email)?.username
-	res.send(`Welcome ${loggedInUser}!`);
+	console.log("--loggedin user--", loggedInUser);
+	res.send({ "message": `Welcome ${loggedInUser}!` });
 }
 
 const refresh = (req, res) => {

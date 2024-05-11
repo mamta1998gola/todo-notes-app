@@ -5,12 +5,8 @@
             "todo": "Car"
         },
         {
-            "id": "ca79e6ba-224e-460b-9d78-0c0356558014",
-            "todo": "Home"
-        },
-        {
-            "id": "9da2853e-f751-45e1-83eb-3b296e0e0b65",
-            "todo": "Complete Mamta Project"
+            "id": "f79c2d11-8f98-490c-9aef-3f3d4987ad33",
+            "todo": "study for 4th sem exam"
         }
     ],
     "completedTodos": [
@@ -21,6 +17,44 @@
         {
             "id": "eb6f3279-63ce-4246-a664-4092e2b329a4",
             "todo": "Buy Laptop"
+        },
+        {
+            "id": "9da2853e-f751-45e1-83eb-3b296e0e0b65",
+            "todo": "Complete Mamta Project"
+        },
+        {
+            "id": "ca79e6ba-224e-460b-9d78-0c0356558014",
+            "todo": "Home"
         }
-    ]
+    ],
+    "prabhat5172992@gmail.com": {
+        "allTodos": [
+            {
+                "id": "a30fd2ab-18ce-4046-aebf-1f9d36048790",
+                "todo": "Car"
+            },
+            {
+                "id": "f79c2d11-8f98-490c-9aef-3f3d4987ad33",
+                "todo": "study for 4th sem exam"
+            },
+            {
+                "id": "8e46e0d3-c635-4449-b305-1c1fca661fbe",
+                "todo": "Home coming"
+            }
+        ],
+        "completedTodos": [
+            {
+                "id": "f1302c83-f4bf-4b1c-8f0a-b553946733a8",
+                "todo": "Write stories"
+            },
+            {
+                "id": "eb6f3279-63ce-4246-a664-4092e2b329a4",
+                "todo": "Buy Laptop"
+            },
+            {
+                "id": "9da2853e-f751-45e1-83eb-3b296e0e0b65",
+                "todo": "Complete Mamta Project"
+            }
+        ]
+    }
 }

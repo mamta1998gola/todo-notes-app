@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { MyContext } from '../MyContext';
+import UserGreeting  from './userGreetings';
 
 const API = 'http://localhost:8080';
 
@@ -50,7 +51,7 @@ function StorageToDo() {
                 'Content-Type': 'application/json'
             },
             method: "POST",
-            body: JSON.stringify({ notes,  email: user.email})
+            body: JSON.stringify({ notes, email: user.email })
         })
             .then(() => {
                 fetchAllNotes();
@@ -96,8 +97,8 @@ function StorageToDo() {
         </Stack>
     </Box>;
 
-    console.log("Userdetails", user);
     return (<>
+        <UserGreeting />
         <FormControl fullWidth sx={{ m: 1 }} variant="filled">
             <TextField id="standard-basic" label="Create notes" variant="standard" value={notes} onChange={(e) => createNotes(e)} />
         </FormControl>

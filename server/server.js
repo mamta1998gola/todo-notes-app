@@ -30,7 +30,7 @@ const user = "prabhat5172992@gmail.com";
 
 app.post('/signup', (req, res) => {
     const { username, password, email } = req.body;
-    
+
     if (username && password && /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
         fs.readFile('userlist.json', 'utf8', (err, data) => {
             const d = JSON.parse(data);
@@ -48,12 +48,12 @@ app.post('/signup', (req, res) => {
                     }
                 });
             } else {
-                res.status(400).send({"message": "User already exists!"});
+                res.status(400).send({ "message": "User already exists!" });
             }
         });
         // signIn(req, res);
     } else {
-        res.status(400).send({ "message": "Data is not correct!"})
+        res.status(400).send({ "message": "Data is not correct!" })
     }
 });
 
@@ -62,19 +62,19 @@ app.put('/signup', (req, res) => {
 
     fs.readFile('userlist.json', 'utf8', (err, data) => {
         const d = JSON.parse(data);
-        if(!d.find(item => item.email === email)) {
+        if (!d.find(item => item.email === email)) {
             res.status(400).send({ "message": "User doesn't exit!" })
         } else {
             const changedData = d.map(item => {
-                if(item.email === email) {
+                if (item.email === email) {
                     item.password = password;
                 }
                 return item;
             });
-    
+
             fs.writeFile('userlist.json', JSON.stringify(changedData, null, 4), (err) => {
                 if (err) throw err;
-                res.status(200).send({message: "Update successful!"});
+                res.status(200).send({ message: "Update successful!" });
             });
         }
     });
@@ -122,21 +122,23 @@ app.delete('/deleteNotes/:email', (req, res) => {
         fs.writeFile('user-notes.json', JSON.stringify(d, null, 4), (err) => {
             if (err) throw err;
             else {
-                res.status(200).send({ message: 'notes deleted!'})
+                res.status(200).send({ message: 'notes deleted!' })
             }
         });
     });
 });
 
 app.post('/addtodo', (req, res) => {
-    const { todo } = req.body;
+    const { todo, email } = req.body;
 
     fs.readFile('todos.json', 'utf8', (err, data) => {
         const d = JSON.parse(data);
-        d.allTodos.push({
-            id: uuidv4(),
-            todo
-        });
+        if (d[email]) {
+            d[email].allTodos.push({
+                id: uuidv4(),
+                todo
+            });
+        }
 
         fs.writeFile('todos.json', JSON.stringify(d, null, 4), (err) => {
             if (err) throw err;
@@ -146,22 +148,24 @@ app.post('/addtodo', (req, res) => {
     res.status(200).send({ 'message': 'Successfully added todo!' });
 });
 
-app.get('/getAllTodos', (req, res) => {
+app.get('/getAllTodos/:email', (req, res) => {
     fs.readFile('todos.json', 'utf8', (err, data) => {
-        res.status(200).send(data);
+        const d = JSON.parse(data)[req.params.email];
+        res.status(200).send(JSON.stringify(d));
     });
 });
 
 app.put('/updateTodos', (req, res) => {
-    const { id, type } = req.body;
+    const { id, type, email } = req.body;
     const d = { "allTodos": [], "completedTodos": [] }
 
     fs.readFile('todos.json', 'utf8', (err, data) => {
         const todoData = JSON.parse(data);
-        d.completedTodos = [...todoData.completedTodos];
+        const userTodo = todoData[email];
+        d.completedTodos = [...userTodo.completedTodos];
 
         if (type === "all") {
-            todoData.allTodos.forEach(element => {
+            userTodo.allTodos.forEach(element => {
                 if (element.id === id) {
                     d.completedTodos.push(element);
                 } else {
@@ -171,11 +175,12 @@ app.put('/updateTodos', (req, res) => {
         }
 
         if (type === "completed") {
-            d.allTodos = [...todoData.allTodos]
-            d.completedTodos = todoData.completedTodos.filter(item => item.id !== id);
+            d.allTodos = [...userTodo.allTodos]
+            d.completedTodos = userTodo.completedTodos.filter(item => item.id !== id);
         }
 
-        fs.writeFile('todos.json', JSON.stringify(d, null, 4), (err) => {
+        userTodo[email] = { ...d };
+        fs.writeFile('todos.json', JSON.stringify(userTodo, null, 4), (err) => {
             if (err) throw err;
         });
     });

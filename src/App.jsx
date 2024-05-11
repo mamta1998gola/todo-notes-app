@@ -10,6 +10,7 @@ import LoginRegister from './components/loginRegister';
 import ChangePassowrd from './components/changePassword';
 import PrivateRoutes from './authroute';
 import { MyContext } from './MyContext';
+import UserGreeting from './components/userGreetings';
 
 const API = 'http://localhost:8080';
 
@@ -19,7 +20,7 @@ function Root() {
   const [completedTodos, setCompletedTodos] = useState([]);
 
   const fetchTodos = async () => {
-    const data = await fetch(`${API}/getAllTodos`);
+    const data = await fetch(`${API}/getAllTodos/${user.email}`);
     const todos = await data.json();
 
     setAllTodos(todos?.allTodos || []);
@@ -27,8 +28,10 @@ function Root() {
   }
 
   useEffect(() => {
-    fetchTodos();
-  }, []);
+    if(user.email) {
+      fetchTodos();
+    }
+  }, [user.email]);
 
   return (
     <MyContext.Provider value={{ user, setUser }}>
@@ -37,6 +40,7 @@ function Root() {
         <Routes>
           <Route path="/" element={<LoginRegister />} />
           <Route path="/todo" element={<PrivateRoutes>
+            <UserGreeting />
             <AddTodo fetchAllTodos={fetchTodos} />
             <Todos
               allTodos={allTodos}

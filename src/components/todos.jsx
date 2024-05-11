@@ -1,3 +1,4 @@
+import { useContext, useEffect } from 'react';
 import {
     Box,
     Paper,
@@ -5,6 +6,7 @@ import {
     Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { MyContext } from '../MyContext';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -17,6 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const API = 'http://localhost:8080';
 
 export default function BasicStack({ allTodos, completedTodos, fetchAllTodos }) {
+    const { user } = useContext(MyContext);
     const clearTodos = (e, id, type) => {
         e.preventDefault();
 
@@ -26,7 +29,7 @@ export default function BasicStack({ allTodos, completedTodos, fetchAllTodos }) 
                 'Content-Type': 'application/json'
             },
             method: "PUT",
-            body: JSON.stringify({ id, type })
+            body: JSON.stringify({ id, type, email: user.email })
         })
             .then(() => {
                 fetchAllTodos();
@@ -35,6 +38,10 @@ export default function BasicStack({ allTodos, completedTodos, fetchAllTodos }) 
                 throw new Error(err)
             })
     }
+
+    useEffect(() => {
+        fetchAllTodos();
+    }, [])
 
     return (
         <>

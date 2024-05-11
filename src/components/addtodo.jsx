@@ -1,15 +1,17 @@
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
     FormControl,
     TextField,
     Button,
 } from '@mui/material';
+import { MyContext } from '../MyContext';
 
 const API = 'http://localhost:8080';
 
 export default function BasicTextFields({ fetchAllTodos }) {
     const [todo, setTodo] = useState('');
+    const { user } = useContext(MyContext);
 
     const createTodo = (e) => {
         setTodo(e.target.value);
@@ -22,7 +24,7 @@ export default function BasicTextFields({ fetchAllTodos }) {
                 'Content-Type': 'application/json'
             },
             method: "POST",
-            body: JSON.stringify({ todo })
+            body: JSON.stringify({ todo, email: user.email })
         })
             .then(() => {
                 fetchAllTodos();
