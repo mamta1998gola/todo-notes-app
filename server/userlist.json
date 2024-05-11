@@ -2,7 +2,7 @@
     {
         "username": "Prabhat Ranjan",
         "email": "prabhat5172992@gmail.com",
-        "password": "1234567890"
+        "password": "908090"
     },
     {
         "username": "Mamta Gola",
@@ -17,7 +17,7 @@
     {
         "username": "Mamta Ranjan",
         "email": "mamtaranjan@gmail.com",
-        "password": "111111111111"
+        "password": "1111111111"
     },
     {
         "username": "mamtaranjan@gmail.com",
@@ -28,5 +28,10 @@
         "username": "Hemant",
         "email": "hemant@gmail.com",
         "password": "123"
+    },
+    {
+        "username": "Prabhu",
+        "email": "prabhu@gmail.com",
+        "password": "73645"
     }
 ]

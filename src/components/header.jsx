@@ -18,6 +18,8 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from "react-router-dom";
 
+const API = "http://localhost:8080";
+
 const drawerWidth = 240;
 const navItems = ['Todo', 'Storage'];
 
@@ -25,6 +27,7 @@ function Header(props) {
   const { window } = props;
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const authbtn = sessionStorage.getItem('token') ? 'Logout' : 'Login';
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -44,18 +47,39 @@ function Header(props) {
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItem key='auth_btn_list' disablePadding>
+          <ListItemButton sx={{ textAlign: 'center' }} onClick={() => routes(authbtn)}>
+            <ListItemText primary={authbtn} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+  const Logout = () => {
+    fetch(`${API}/logout`)
+    .then(()=> {
+      navigate('/');
+      sessionStorage.setItem('token', '');
+    })
+    .catch();
+  }
+
   const routes = (item) => {
-    if (item === 'Todo') {
-      navigate("/");
-    } 
-    if(item === 'Storage') {
-      navigate('/storage');
+    switch(item) {
+      case 'Todo':
+        navigate('/todo');
+      break;
+      case 'Storage':
+        navigate('/storage');
+      break;
+      case 'Logout': 
+        Logout();
+      break;
+      default:
+        navigate('/');
     }
   }
 
@@ -86,6 +110,9 @@ function Header(props) {
                 {item}
               </Button>
             ))}
+            <Button key='auth_btn' sx={{ color: '#fff' }} onClick={() => routes(authbtn)}>
+              {authbtn}
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>
@@ -111,10 +138,6 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window: PropTypes.func,
 };
 

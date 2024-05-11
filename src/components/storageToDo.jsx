@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
     FormControl,
     TextField,
@@ -8,6 +8,7 @@ import {
     Paper,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { MyContext } from '../MyContext';
 
 const API = 'http://localhost:8080';
 
@@ -19,13 +20,13 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'left',
 }));
 
-
 function StorageToDo() {
+    const { user } = useContext(MyContext);
     const [allNotes, setAllNotes] = useState([]);
     const [notes, setNotes] = useState('');
 
     const fetchAllNotes = async () => {
-        const data = await fetch(`${API}/getNotes`);
+        const data = await fetch(`${API}/getNotes/${user.email}`);
         const notesData = await data.json();
 
         setAllNotes(notesData);
@@ -49,7 +50,7 @@ function StorageToDo() {
                 'Content-Type': 'application/json'
             },
             method: "POST",
-            body: JSON.stringify({ notes })
+            body: JSON.stringify({ notes,  email: user.email})
         })
             .then(() => {
                 fetchAllNotes();
@@ -64,7 +65,7 @@ function StorageToDo() {
     const clearNotes = (e, id) => {
         e.preventDefault();
 
-        fetch(`${API}/deleteNotes`, {
+        fetch(`${API}/deleteNotes/${user.email}`, {
             mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
@@ -95,6 +96,7 @@ function StorageToDo() {
         </Stack>
     </Box>;
 
+    console.log("Userdetails", user);
     return (<>
         <FormControl fullWidth sx={{ m: 1 }} variant="filled">
             <TextField id="standard-basic" label="Create notes" variant="standard" value={notes} onChange={(e) => createNotes(e)} />

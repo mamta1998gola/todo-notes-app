@@ -8,10 +8,13 @@ import './App.css'
 import ErrorRoute from './components/error-route';
 import LoginRegister from './components/loginRegister';
 import ChangePassowrd from './components/changePassword';
+import PrivateRoutes from './authroute';
+import { MyContext } from './MyContext';
 
 const API = 'http://localhost:8080';
 
 function Root() {
+  const [user, setUser] = useState({ 'username': '', 'email': '', 'password': ''})
   const [allTodos, setAllTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
 
@@ -28,27 +31,26 @@ function Root() {
   }, []);
 
   return (
-    <>
+    <MyContext.Provider value={{ user, setUser }}>
       <Header />
-      <div> 
+      <div>
         <Routes>
-          <Route path="/" element={<>
+          <Route path="/" element={<LoginRegister />} />
+          <Route path="/todo" element={<PrivateRoutes>
             <AddTodo fetchAllTodos={fetchTodos} />
             <Todos
               allTodos={allTodos}
               completedTodos={completedTodos}
               fetchAllTodos={fetchTodos}
             />
-          </>}
+          </PrivateRoutes>}
             errorElement={<ErrorRoute />}
           />
-          <Route path="/storage" element={<StorageToDo />} errorElement={<ErrorRoute />} />
-          <Route path="/auth" element={<LoginRegister />} />
+          <Route path="/storage" element={<PrivateRoutes><StorageToDo /></PrivateRoutes>} errorElement={<ErrorRoute />} />
           <Route path="/changepassword" element={<ChangePassowrd />} />
         </Routes>
       </div>
-    </>
-
+    </MyContext.Provider>
   )
 }
 

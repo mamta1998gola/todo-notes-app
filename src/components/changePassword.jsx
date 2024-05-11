@@ -14,7 +14,6 @@ const ChangePassword = () => {
     });
     const [message, setMessage] = useState('');
     const [redirectPage, setRedirect] = useState(false);
-    const [val, add] = useState(9);
 
     const handleClose = () => {
         setMessage("");
@@ -29,11 +28,12 @@ const ChangePassword = () => {
 
         const data = fields;
         data[type] = val;
-        console.log("data", data);
         setFields(data);
     }
 
-    const changeReq = async () => {
+    const changeReq = (event) => {
+        event.preventDefault();
+
         fetch(`${API}/signup`, {
             mode: 'cors',
             headers: {
@@ -43,49 +43,24 @@ const ChangePassword = () => {
             body: JSON.stringify({ email: fields.email, password: fields.password })
         })
             .then((res) => {
-                console.log("response.messgae", response);
                 return res.json()
             })
             .then(response => {
-                console.log("response.messgae", response.message);
                 setMessage(response.message);
                 resetFields('changepassword');
                 setRedirect(true);
-                add(8);
             })
             .catch(err => {
                 setMessage(err.message);
                 throw new Error(err)
-            })
+            });
+    };
 
-        // const options = {
-        //     mode: 'cors',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     method: "PUT",
-        //     body: JSON.stringify({ email: fields.email, password: fields.password })
-        // }
-
-        // const data = await fetch(`${API}/signup`, options)
-        // const response = await data.json();
-
-        // setMessage(response.message);
-        // resetFields('changepassword');
-        // setRedirect(true);
-
-        // console.log("tttttttttttt", data, response);
-    }
-
-    // useEffect(()=>{
-    //     console.log("no", redirectPage)
-    //     if(redirectPage) {
-    //         console.log("yes", redirectPage)
-    //         navigate('/auth');
-    //     }
-    // }, [redirectPage]);
-
-    console.log("redirect: ", redirectPage, val);
+    useEffect(()=>{
+        if(redirectPage) {
+            navigate('/');
+        }
+    }, [redirectPage]);
 
     return (
         <div className="auth-form">

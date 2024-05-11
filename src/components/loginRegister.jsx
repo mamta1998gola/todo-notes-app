@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { MyContext } from '../MyContext';
 import './LoginRegister.css';
 
 const API = 'http://localhost:8080';
 
 
 const LoginRegister = () => {
+    const navigate = useNavigate();
+    const { setUser } = useContext(MyContext);
     const [action, setAction] = useState('');
     const [fields, setFields] = useState({
         username: '',
@@ -41,7 +44,8 @@ const LoginRegister = () => {
         setFields({...data}); // don't set directly objects
     }
 
-    const submitData = () => {
+    const submitData = (event) => {
+        event.preventDefault();
         fetch(`${API}/signup`, {
             mode: 'cors',
             headers: {
@@ -57,7 +61,7 @@ const LoginRegister = () => {
                 if(response.token) {
                     sessionStorage.setItem('token', JSON.stringify(response.token));
                 }
-                setMessage(response.message);
+                setMessage(response?.message || '');
                 resetFields('registerform');
             })
             .catch(err => {
@@ -66,7 +70,9 @@ const LoginRegister = () => {
             })
     }
 
-    const loginReq = () => {
+    const loginReq = (event) => {
+        event.preventDefault();
+
         fetch(`${API}/signin`, {
             mode: 'cors',
             headers: {
@@ -79,11 +85,13 @@ const LoginRegister = () => {
                 return res.json()
             })
             .then(response => {
-                if(response.token) {
-                    sessionStorage.setItem('token', JSON.stringify(response.token));
-                }
                 setMessage(response.message);
                 resetFields('loginform');
+                if(response.token) {
+                    setUser({...response.user});
+                    sessionStorage.setItem('token', JSON.stringify(response.token));
+                    navigate('/todo');
+                }
             })
             .catch(err => {
                 setMessage(err.message);

@@ -29,7 +29,7 @@ const signIn = (req, res, userlist) => {
 	// set the cookie as the token string, with a similar max age as the token
 	// here, the max age is in milliseconds, so we multiply by 1000
 	res.cookie("token", token, { maxAge: jwtExpirySeconds * 1000 });
-	res.send({ token });
+	res.send({ token, user });
 	res.end();
 }
 
@@ -67,8 +67,6 @@ const welcome = (req, res) => {
 const refresh = (req, res) => {
 	// (BEGIN) The code uptil this point is the same as the first part of the `welcome` route
 	const token = req.cookies.token
-
-	console.log("00", token);
 
 	if (!token) {
 		return res.status(401).end()

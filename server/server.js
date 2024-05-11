@@ -86,11 +86,11 @@ app.post('/refresh', refresh);
 app.get('/logout', logout);
 
 app.post('/addNotes', (req, res) => {
-    const { notes } = req.body;
+    const { notes, email } = req.body;
 
     fs.readFile('user-notes.json', 'utf8', (err, data) => {
         const d = JSON.parse(data);
-        d[user].push({
+        d[email].push({
             id: uuidv4(),
             notes
         });
@@ -103,23 +103,27 @@ app.post('/addNotes', (req, res) => {
     res.status(200).send({ 'message': 'Successfully added notes!' });
 });
 
-app.get('/getNotes', (req, res) => {
+app.get('/getNotes/:email', (req, res) => {
     fs.readFile('user-notes.json', 'utf8', (err, data) => {
-        const notesData = JSON.parse(data)[user];
+        const notesData = JSON.parse(data)[req.params.email || user];
         res.status(200).send(notesData);
     });
 });
 
-app.delete('/deleteNotes', (req, res) => {
+app.delete('/deleteNotes/:email', (req, res) => {
     const { id } = req.body;
 
     fs.readFile('user-notes.json', 'utf8', (err, data) => {
         const d = JSON.parse(data);
+        const usr = req.params.email || user;
 
-        d[user] = [...d[user].filter(item => item.id !== id)];
+        d[usr] = [...d[usr].filter(item => item.id !== id)];
 
         fs.writeFile('user-notes.json', JSON.stringify(d, null, 4), (err) => {
             if (err) throw err;
+            else {
+                res.status(200).send({ message: 'notes deleted!'})
+            }
         });
     });
 });
