@@ -90,6 +90,10 @@ app.post('/addNotes', (req, res) => {
 
     fs.readFile('user-notes.json', 'utf8', (err, data) => {
         const d = JSON.parse(data);
+        if(!d[email]) {
+            d[email] = []
+        }
+
         d[email].push({
             id: uuidv4(),
             notes
@@ -106,7 +110,7 @@ app.post('/addNotes', (req, res) => {
 app.get('/getNotes/:email', (req, res) => {
     fs.readFile('user-notes.json', 'utf8', (err, data) => {
         const notesData = JSON.parse(data)[req.params.email || user];
-        res.status(200).send(notesData);
+        res.status(200).send(notesData || []);
     });
 });
 
@@ -133,12 +137,14 @@ app.post('/addtodo', (req, res) => {
 
     fs.readFile('todos.json', 'utf8', (err, data) => {
         const d = JSON.parse(data);
-        if (d[email]) {
-            d[email].allTodos.push({
-                id: uuidv4(),
-                todo
-            });
+        if(!d[email]) {
+            d[email] = {"allTodos": [], "completedTodos": []}
         }
+
+        d[email].allTodos.push({
+            id: uuidv4(),
+            todo
+        });
 
         fs.writeFile('todos.json', JSON.stringify(d, null, 4), (err) => {
             if (err) throw err;
@@ -151,7 +157,7 @@ app.post('/addtodo', (req, res) => {
 app.get('/getAllTodos/:email', (req, res) => {
     fs.readFile('todos.json', 'utf8', (err, data) => {
         const d = JSON.parse(data)[req.params.email];
-        res.status(200).send(JSON.stringify(d));
+        res.status(200).send(JSON.stringify(d) || { allTodos: [], completedTodos: [] });
     });
 });
 
@@ -161,7 +167,7 @@ app.put('/updateTodos', (req, res) => {
 
     fs.readFile('todos.json', 'utf8', (err, data) => {
         const todoData = JSON.parse(data);
-        const userTodo = todoData[email];
+        let userTodo = todoData[email];
         d.completedTodos = [...userTodo.completedTodos];
 
         if (type === "all") {
@@ -179,8 +185,8 @@ app.put('/updateTodos', (req, res) => {
             d.completedTodos = userTodo.completedTodos.filter(item => item.id !== id);
         }
 
-        userTodo[email] = { ...d };
-        fs.writeFile('todos.json', JSON.stringify(userTodo, null, 4), (err) => {
+        todoData[email] = { ...d }
+        fs.writeFile('todos.json', JSON.stringify(todoData, null, 4), (err) => {
             if (err) throw err;
         });
     });

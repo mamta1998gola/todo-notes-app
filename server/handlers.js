@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const users = require("./userlist.json");
 
 const jwtKey = "todo_notes_storage_key"
-const jwtExpirySeconds = 300
+const jwtExpirySeconds = 1500
 
 const signIn = (req, res, userlist) => {
 	// Get credentials from JSON body
@@ -68,6 +68,7 @@ const welcome = (req, res) => {
 const refresh = (req, res) => {
 	// (BEGIN) The code uptil this point is the same as the first part of the `welcome` route
 	const token = req.cookies.token
+	console.log("refresh token: ", token);
 
 	if (!token) {
 		return res.status(401).end()
