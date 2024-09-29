@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { MyContext } from '../MyContext';
 
-const API = 'http://localhost:8080';
+const API = import.meta.env.VITE_API_URL;
 
 export default function BasicTextFields({ fetchAllTodos }) {
     const [todo, setTodo] = useState('');
@@ -27,7 +27,7 @@ export default function BasicTextFields({ fetchAllTodos }) {
             body: JSON.stringify({ todo, email: user.email })
         })
             .then(() => {
-                fetchAllTodos();
+                if(user?.email) fetchAllTodos();
                 setTodo('');
             })
             .catch(err => {

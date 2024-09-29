@@ -9,9 +9,9 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { MyContext } from '../MyContext';
-import UserGreeting  from './userGreetings';
+import UserGreeting from './userGreetings';
 
-const API = 'http://localhost:8080';
+const API = import.meta.env.VITE_API_URL;
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -22,21 +22,44 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function StorageToDo() {
-    const { user } = useContext(MyContext);
+    const { user, setUser } = useContext(MyContext);
     const [allNotes, setAllNotes] = useState([]);
     const [notes, setNotes] = useState('');
 
     const fetchAllNotes = async () => {
-        const data = await fetch(`${API}/getNotes/${user.email}`);
-        const notesData = await data.json();
+        if (user?.email) {
+            const data = await fetch(`${API}/getNotes/${user.email}`);
+            const notesData = await data.json();
 
-        setAllNotes(notesData);
+            setAllNotes(notesData);
+        }
+    }
+
+    const getUserData = async () => {
+        const data = await fetch(`${API}/userdata`, {
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({ token: JSON.parse(sessionStorage.getItem('token')) ?? '' })
+        });
+
+        const userData = await data.json();
+        setUser(prev => ({
+            ...prev,
+            email: userData.data.email
+        }));
     }
 
 
     useEffect(() => {
-        fetchAllNotes()
-    }, []);
+        if (user?.email) {
+            fetchAllNotes();
+        } else {
+            getUserData();
+        }
+    }, [user.email]);
 
     // save single notes
     const createNotes = (e) => {

@@ -12,24 +12,45 @@ import PrivateRoutes from './authroute';
 import { MyContext } from './MyContext';
 import UserGreeting from './components/userGreetings';
 
-const API = 'http://localhost:8080';
+const API = import.meta.env.VITE_API_URL;
 
 function Root() {
-  const [user, setUser] = useState({ 'username': '', 'email': '', 'password': ''})
+  const [user, setUser] = useState({ 'username': '', 'email': '', 'password': '' })
   const [allTodos, setAllTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
 
   const fetchTodos = async () => {
-    const data = await fetch(`${API}/getAllTodos/${user.email}`);
-    const todos = await data.json();
+    if (user?.email) {
+      const data = await fetch(`${API}/getAllTodos/${user.email}`);
+      const todos = await data.json();
 
-    setAllTodos(todos?.allTodos || []);
-    setCompletedTodos(todos?.completedTodos || []);
+      setAllTodos(todos?.allTodos || []);
+      setCompletedTodos(todos?.completedTodos || []);
+    }
+  }
+
+  const getUserData = async () => {
+    const data = await fetch(`${API}/userdata`, {
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({ token: JSON.parse(sessionStorage.getItem('token')) ?? '' })
+    });
+
+    const userData = await data.json();
+    setUser(prev => ({
+      ...prev,
+      email: userData.data.email
+    }));
   }
 
   useEffect(() => {
-    if(user.email) {
+    if (user.email !== '') {
       fetchTodos();
+    } else {
+      getUserData();
     }
   }, [user.email]);
 

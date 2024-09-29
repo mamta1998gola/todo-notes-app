@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import './LoginRegister.css';
 
-const API = 'http://localhost:8080';
+const API = import.meta.env.VITE_API_URL;
 
 const ChangePassword = () => {
     const navigate = useNavigate();

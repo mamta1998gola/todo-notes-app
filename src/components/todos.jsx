@@ -16,7 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'left',
 }));
 
-const API = 'http://localhost:8080';
+const API = import.meta.env.VITE_API_URL;
 
 export default function BasicStack({ allTodos, completedTodos, fetchAllTodos }) {
     const { user } = useContext(MyContext);
@@ -32,7 +32,7 @@ export default function BasicStack({ allTodos, completedTodos, fetchAllTodos }) 
             body: JSON.stringify({ id, type, email: user.email })
         })
             .then(() => {
-                fetchAllTodos();
+                if(user?.email) fetchAllTodos();
             })
             .catch(err => {
                 throw new Error(err)
