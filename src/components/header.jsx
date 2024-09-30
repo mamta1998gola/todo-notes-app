@@ -18,7 +18,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from "react-router-dom";
 
-const API = "http://localhost:8080";
+const API = import.meta.env.VITE_API_URL;
 
 const drawerWidth = 240;
 const navItems = ['Todo', 'Storage'];
