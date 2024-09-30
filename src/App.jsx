@@ -30,23 +30,41 @@ function Root() {
   }
 
   const getUserData = async () => {
-    const data = await fetch(`${API}/userdata`, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: "POST",
-      credentials: 'include',
-      body: JSON.stringify({ token: JSON.parse(sessionStorage.getItem('token')) ?? '' })
-    });
+    try {
+      const response = await fetch(`${API}/userdata`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ token: JSON.parse(sessionStorage.getItem('token')) ?? '' })
+      });
 
-    const userData = await data.json();
-    setUser(prev => ({
-      ...prev,
-      email: userData.data.email
-    }));
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const userData = await response.json();
+      setUser(prev => ({
+        ...prev,
+        email: userData.data.email
+      }));
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      // Handle the error appropriately (e.g., show an error message to the user)
+    }
   }
 
   useEffect(() => {
+
+    fetch('https://to-do-server-app.vercel.app/test-cors', {
+      method: 'GET',
+      credentials: 'include',
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
+
     if (user.email !== '') {
       fetchTodos();
     } else {
