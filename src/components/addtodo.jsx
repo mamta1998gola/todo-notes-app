@@ -24,6 +24,7 @@ export default function BasicTextFields({ fetchAllTodos }) {
                 'Content-Type': 'application/json'
             },
             method: "POST",
+            credentials: 'include',
             body: JSON.stringify({ todo, email: user.email })
         })
             .then(() => {

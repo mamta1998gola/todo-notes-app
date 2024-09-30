@@ -52,6 +52,7 @@ const LoginRegister = () => {
                 'Content-Type': 'application/json'
             },
             method: "POST",
+            credentials: 'include',
             body: JSON.stringify({ ...fields })
         })
             .then((res) => {
@@ -79,6 +80,7 @@ const LoginRegister = () => {
                 'Content-Type': 'application/json'
             },
             method: "POST",
+            credentials: 'include',
             body: JSON.stringify({ email: fields.email, password: fields.password })
         })
             .then((res) => {

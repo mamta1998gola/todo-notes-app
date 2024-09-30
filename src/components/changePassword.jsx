@@ -40,6 +40,7 @@ const ChangePassword = () => {
                 'Content-Type': 'application/json'
             },
             method: "PUT",
+            credentials: 'include',
             body: JSON.stringify({ email: fields.email, password: fields.password })
         })
             .then((res) => {

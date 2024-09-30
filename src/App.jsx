@@ -36,6 +36,7 @@ function Root() {
         'Content-Type': 'application/json'
       },
       method: "POST",
+      credentials: 'include',
       body: JSON.stringify({ token: JSON.parse(sessionStorage.getItem('token')) ?? '' })
     });
 

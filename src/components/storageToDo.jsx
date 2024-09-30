@@ -42,6 +42,7 @@ function StorageToDo() {
                 'Content-Type': 'application/json'
             },
             method: "POST",
+            credentials: 'include',
             body: JSON.stringify({ token: JSON.parse(sessionStorage.getItem('token')) ?? '' })
         });
 
@@ -74,6 +75,7 @@ function StorageToDo() {
                 'Content-Type': 'application/json'
             },
             method: "POST",
+            credentials: 'include',
             body: JSON.stringify({ notes, email: user.email })
         })
             .then(() => {
@@ -95,6 +97,7 @@ function StorageToDo() {
                 'Content-Type': 'application/json'
             },
             method: "DELETE",
+            credentials: 'include',
             body: JSON.stringify({ id })
         })
             .then(() => {

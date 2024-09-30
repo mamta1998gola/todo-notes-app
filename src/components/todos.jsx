@@ -29,6 +29,7 @@ export default function BasicStack({ allTodos, completedTodos, fetchAllTodos }) 
                 'Content-Type': 'application/json'
             },
             method: "PUT",
+            credentials: 'include',
             body: JSON.stringify({ id, type, email: user.email })
         })
             .then(() => {
