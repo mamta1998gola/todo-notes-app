@@ -55,7 +55,6 @@ function Root() {
           }));
         })
         .catch(err => { throw new Error(err) })
-
     }
   }
 

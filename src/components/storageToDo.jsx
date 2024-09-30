@@ -28,7 +28,14 @@ function StorageToDo() {
 
     const fetchAllNotes = async () => {
         if (user?.email) {
-            fetch(`${API}/getNotes/${user.email}`)
+            fetch(`${API}/getNotes`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ email: user.email })
+            })
             .then(res => res.json())
             .then(notesData => {
                 setAllNotes(notesData);
