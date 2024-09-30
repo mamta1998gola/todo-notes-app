@@ -28,36 +28,33 @@ function StorageToDo() {
 
     const fetchAllNotes = async () => {
         if (user?.email) {
-            const data = await fetch(`${API}/getNotes/${user.email}`);
-            const notesData = await data.json();
-
-            setAllNotes(notesData);
+            fetch(`${API}/getNotes/${user.email}`)
+            .then(res => res.json())
+            .then(notesData => {
+                setAllNotes(notesData);
+            })
         }
     }
 
     const getUserData = async () => {
         try {
-            const response = await fetch(`${API}/userdata`, {
+            fetch(`${API}/userdata`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 credentials: 'include',
                 body: JSON.stringify({ token: JSON.parse(sessionStorage.getItem('token')) ?? '' })
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const userData = await response.json();
-            setUser(prev => ({
-                ...prev,
-                email: userData.data.email
-            }));
+            })
+            .then(res => res.json())
+            .then(userData => {
+                setUser(prev => ({
+                    ...prev,
+                    email: userData.data.email
+                }));
+            })
         } catch (error) {
             console.error("Error fetching user data:", error);
-            // Handle the error appropriately (e.g., show an error message to the user)
         }
     }
 

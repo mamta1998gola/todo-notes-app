@@ -21,11 +21,12 @@ function Root() {
 
   const fetchTodos = async () => {
     if (user?.email) {
-      const data = await fetch(`${API}/getAllTodos/${user.email}`);
-      const todos = await data.json();
-
-      setAllTodos(todos?.allTodos || []);
-      setCompletedTodos(todos?.completedTodos || []);
+      fetch(`${API}/getAllTodos/${user.email}`)
+        .then(res => res.json())
+        .then(todos => {
+          setAllTodos(todos?.allTodos || []);
+          setCompletedTodos(todos?.completedTodos || []);
+        });
     }
   }
 
