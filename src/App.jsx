@@ -21,7 +21,14 @@ function Root() {
 
   const fetchTodos = async () => {
     if (user?.email) {
-      fetch(`${API}/getAllTodos/${user.email}`)
+      fetch(`${API}/getAllTodos`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email: user.email })
+      })
         .then(res => res.json())
         .then(todos => {
           setAllTodos(todos?.allTodos || []);

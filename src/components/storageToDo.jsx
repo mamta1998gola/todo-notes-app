@@ -94,13 +94,13 @@ function StorageToDo() {
     const clearNotes = (e, id) => {
         e.preventDefault();
 
-        fetch(`${API}/deleteNotes/${user.email}`, {
+        fetch(`${API}/deleteNotes`, {
             headers: {
                 'Content-Type': 'application/json'
             },
             method: "DELETE",
             credentials: 'include',
-            body: JSON.stringify({ id })
+            body: JSON.stringify({ id, email: user.email })
         })
             .then(() => {
                 fetchAllNotes();
