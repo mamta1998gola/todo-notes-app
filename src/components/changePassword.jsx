@@ -35,7 +35,6 @@ const ChangePassword = () => {
         event.preventDefault();
 
         fetch(`${API}/signup`, {
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },

@@ -31,7 +31,6 @@ function Root() {
 
   const getUserData = async () => {
     const data = await fetch(`${API}/userdata`, {
-      mode: 'cors',
       headers: {
         'Content-Type': 'application/json'
       },

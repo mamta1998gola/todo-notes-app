@@ -47,7 +47,6 @@ const LoginRegister = () => {
     const submitData = (event) => {
         event.preventDefault();
         fetch(`${API}/signup`, {
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -75,7 +74,6 @@ const LoginRegister = () => {
         event.preventDefault();
 
         fetch(`${API}/signin`, {
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },

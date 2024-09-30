@@ -24,7 +24,6 @@ export default function BasicStack({ allTodos, completedTodos, fetchAllTodos }) 
         e.preventDefault();
 
         fetch(`${API}/updateTodos`, {
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },

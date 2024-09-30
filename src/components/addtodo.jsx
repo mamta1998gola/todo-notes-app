@@ -19,7 +19,6 @@ export default function BasicTextFields({ fetchAllTodos }) {
 
     const addTodos = () => {
         fetch(`${API}/addtodo`, {
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },

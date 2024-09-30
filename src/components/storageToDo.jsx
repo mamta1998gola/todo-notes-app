@@ -37,7 +37,6 @@ function StorageToDo() {
 
     const getUserData = async () => {
         const data = await fetch(`${API}/userdata`, {
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -70,7 +69,6 @@ function StorageToDo() {
     // call api to save notes
     const addNotes = () => {
         fetch(`${API}/addNotes`, {
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -92,7 +90,6 @@ function StorageToDo() {
         e.preventDefault();
 
         fetch(`${API}/deleteNotes/${user.email}`, {
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },
