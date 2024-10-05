@@ -19,7 +19,7 @@ function Root() {
   const [allTodos, setAllTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
 
-  const fetchTodos = async () => {
+  const fetchTodos = () => {
     if (user?.email) {
       fetch(`${API}/getAllTodos`, {
         method: "POST",

@@ -26,7 +26,7 @@ function StorageToDo() {
     const [allNotes, setAllNotes] = useState([]);
     const [notes, setNotes] = useState('');
 
-    const fetchAllNotes = async () => {
+    const fetchAllNotes = () => {
         if (user?.email) {
             fetch(`${API}/getNotes`, {
                 method: "POST",
@@ -43,7 +43,7 @@ function StorageToDo() {
         }
     }
 
-    const getUserData = async () => {
+    const getUserData = () => {
         try {
             fetch(`${API}/userdata`, {
                 method: "POST",
