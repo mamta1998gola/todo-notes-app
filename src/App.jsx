@@ -59,14 +59,6 @@ function Root() {
   }
 
   useEffect(() => {
-    fetch('https://to-do-server-app.vercel.app/test-cors', {
-      method: 'GET',
-      credentials: 'include',
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
-
     if (user.email !== '') {
       fetchTodos();
     } else if (sessionStorage.getItem('token')) {
